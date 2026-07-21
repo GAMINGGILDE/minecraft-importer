@@ -1,6 +1,6 @@
 plugins {
     java
-    id("com.gradleup.shadow") version "9.4.1"
+    id("com.gradleup.shadow") version "9.6.0"
 }
 
 group = "de.gilde"
@@ -18,11 +18,11 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
 
-    implementation("com.zaxxer:HikariCP:7.0.2")
-    implementation("org.mariadb.jdbc:mariadb-java-client:3.5.8")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.21.3")
+    implementation("com.zaxxer:HikariCP:7.1.0")
+    implementation("org.mariadb.jdbc:mariadb-java-client:3.5.9")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.22.1")
 
-    testImplementation("org.junit.jupiter:junit-jupiter:6.0.3")
+    testImplementation("org.junit.jupiter:junit-jupiter:6.1.2")
     testImplementation("io.papermc.paper:paper-api:26.1.2.build.+")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
