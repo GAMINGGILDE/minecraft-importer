@@ -54,7 +54,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -2374,39 +2373,11 @@ public final class ImportCoordinator implements AutoCloseable {
             return Path.of(configured);
         }
 
-        Path worldContainer = plugin.getServer().getWorldContainer().toPath();
-        List<Path> worldFolders = plugin.getServer().getWorlds().stream()
-                .map(world -> world.getWorldFolder().toPath())
-                .distinct()
-                .collect(Collectors.toList());
-        List<Path> statsCandidates = statsDirCandidates(worldContainer, worldFolders);
-
-        for (Path candidate : statsCandidates) {
-            if (Files.isDirectory(candidate)) {
-                return candidate;
-            }
-        }
-
-        return statsCandidates.get(0);
+        return statsDirectory(plugin.getServer().getLevelDirectory());
     }
 
-    static List<Path> statsDirCandidates(Path worldContainer, List<Path> worldFolders) {
-        List<Path> candidates = new ArrayList<>();
-        for (Path worldFolder : worldFolders) {
-            addStatsDirCandidates(candidates, worldFolder);
-        }
-        addStatsDirCandidates(candidates, worldContainer.resolve("world"));
-        return candidates;
-    }
-
-    private static void addStatsDirCandidates(List<Path> candidates, Path worldFolder) {
-        addDistinctPath(candidates, worldFolder.resolve("players").resolve("stats"));
-    }
-
-    private static void addDistinctPath(List<Path> candidates, Path candidate) {
-        if (!candidates.contains(candidate)) {
-            candidates.add(candidate);
-        }
+    static Path statsDirectory(Path levelDirectory) {
+        return levelDirectory.resolve("players").resolve("stats");
     }
 
     private Path resolveUsercachePath() {
